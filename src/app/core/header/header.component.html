@@ -1,0 +1,21 @@
+<mat-toolbar color="primary" fxLayout fxLayoutAlign="space-between center">
+  <div class="flex items-center">
+    <a href="http://localhost:4200/inicio" >   
+       <img src="../../../assets/icons/viajar.png" alt="Logo" class="h-12 mr-4">
+    </a>
+    <mat-nav-list fxLayout="row" fxLayoutGap="10px">
+      <mat-list-item *ngFor="let menu of listMenu">
+        <a [routerLink]="menu.url" mat-button>
+          <img [src]="menu.icono" alt="{{menu.title}}" class="h-6 w-6 mr-2">
+          <span *ngIf="expanded">{{menu.title}}</span>
+        </a>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+
+  <div fxLayout fxLayoutAlign="center center">
+    <a href="#responsive-header">
+      <img src="../../../assets/icons/cerrar-sesion.png" alt="User" class="rounded-full border-black border shadow-solid ml-4 h-12 w-12">
+    </a>
+  </div>
+</mat-toolbar>
