@@ -1,15 +1,12 @@
 export interface ISignUp {
-    email:    string;
-    password: string;
     card:     string;
     name:     string;
     lastName: string;
-    semester: string;
-    major:    number;
-    rol:      number;
+    email:    string;
+    password: string;
 }
 
-export interface ILogin {
+export interface ISignIn {
     email:    string;
     password: string;
 }
