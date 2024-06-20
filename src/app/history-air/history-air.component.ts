@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { MetaDataColumn } from '../shared/interfaces/metacolumn.interface';
-import { ProjectsService } from '../services/api_serivices/projects/projects.service';
 import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +14,8 @@ import { environment } from '../../environments/environment.development';
   styleUrl: './history-air.component.css'
 })
 export class HistoryAirComponent {
-  private projectsService = inject(ProjectsService);
+  
+  //private projectsService = inject(ProjectsService);
 
   data:any = []
 
@@ -31,11 +31,13 @@ export class HistoryAirComponent {
   records:any =[]
   totalRecords = this.records.length
   constructor(){
-    this.loadProjects()
+    //this.loadProjects()
   }
   
   field: any=[];
+  
   loadProjects(){
+    /*
     this.projectsService.getProjects().subscribe(
       (data) =>{
         this.records = data.data;
@@ -56,12 +58,13 @@ export class HistoryAirComponent {
         this.changePage(0)
       }
     )
-    
+    */
   }
   changePage(page:number){
     const pageSize = environment.PAGE_SIZE
     const skip = pageSize * page
     this.data = this.field.slice(skip, skip + pageSize)
   }
+    
  
 }

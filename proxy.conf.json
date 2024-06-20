@@ -1,0 +1,8 @@
+{
+    "/uta.fisei.vuelo.wcf": {
+      "target": "http://208.94.246.108:35000",
+      "secure": false,
+      "changeOrigin": true
+    }
+}
+  
