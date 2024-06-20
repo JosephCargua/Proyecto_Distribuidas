@@ -3,68 +3,105 @@ import { MetaDataColumn } from '../shared/interfaces/metacolumn.interface';
 import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment.development';
+import { ReservationService } from '../services/api_serivices/ReservationService/reservation.service';
+import { IReservation } from '../interfaces/reservation.interface';
 
 @Component({
   selector: 'app-history-air',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, SharedModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTableModule, SharedModule],
   templateUrl: './history-air.component.html',
-  styleUrl: './history-air.component.css'
+  styleUrls: ['./history-air.component.css']
 })
 export class HistoryAirComponent {
-  
-  //private projectsService = inject(ProjectsService);
+  private reservationService = inject(ReservationService);
 
-  data:any = []
+  data: any = [];
 
-  
   MetaDataColumn: MetaDataColumn[] = [
-    {field:'id', title:'Codigo'},
-    {field:'name', title:'Nombre'},
-    {field:'description', title:'Descripcion'},
-    {field:'dateStart', title:'Fecha Inicio'},
-    {field:'dateEnd', title:'Fecha FIn'},
-    {field:'club', title:'Club'},
-  ]
-  records:any =[]
-  totalRecords = this.records.length
-  constructor(){
-    //this.loadProjects()
-  }
-  
-  field: any=[];
-  
-  loadProjects(){
-    /*
-    this.projectsService.getProjects().subscribe(
-      (data) =>{
-        this.records = data.data;
-        console.log(this.records);
-        this.records.forEach((dato:any) => {
-          
-          this.field.push({
-            id: dato.id,
-            name: dato.Nombre,
-            description: dato.Descripcion,
-            dateStart: dato.Fecha_Ini,
-            dateEnd: dato.Fecha_Fin,
-            club: dato.Id_Club.Nombre
-          });
-        })
+    { field: 'id', title: 'Codigo' },
+    { field: 'idFlight', title: 'Vuelo' },
+    { field: 'card', title: 'Cedula' },
+    { field: 'numberSeats', title: 'Asientos' },
+    { field: 'state', title: 'Estado' },
+    { field: 'unitPrice', title: 'Precio' },
+    { field: 'total', title: 'Total' },
+    { field: 'actions', title: 'Actions' } 
+  ];
+  records: any = [];
+  totalRecords = 0;
 
-        this.totalRecords = this.records.length
-        this.changePage(0)
+  constructor() {
+    this.loadReservations();
+  }
+
+  field: any = [];
+
+  loadReservations() {
+    const card = '1728177310';
+    this.reservationService.getReservation(card).subscribe(
+      (data) => {
+        console.log('Received data:', data);
+        if (Array.isArray(data)) {
+          this.records = data;
+          this.records.forEach((dato: any) => {
+            this.field.push({
+              id: dato.id,
+              idFlight: dato.idVuelo,
+              card: dato.cedula,
+              numberSeats: dato.cantidadAsientos,
+              state: dato.estado,
+              unitPrice: dato.precioUnitario,
+              total: dato.total
+            });
+          });
+
+          this.totalRecords = this.records.length;
+          this.changePage(0);
+        } else {
+          console.error('Data format is not as expected:', data);
+        }
+      },
+      (error) => {
+        console.error('Error fetching reservations', error);
       }
-    )
-    */
+    );
   }
-  changePage(page:number){
-    const pageSize = environment.PAGE_SIZE
-    const skip = pageSize * page
-    this.data = this.field.slice(skip, skip + pageSize)
+
+  changePage(page: number) {
+    const pageSize = environment.PAGE_SIZE;
+    const skip = pageSize * page;
+    this.data = this.field.slice(skip, skip + pageSize);
   }
-    
- 
+
+  cancelReservation(id: number) {
+    const reservation = this.field.find((res: any) => res.id === id);
+    if (reservation) {
+      reservation.state = 'Cancelado';
+      const updatedReservation: IReservation = {
+        ...reservation,
+        estado: 'Cancelado'
+      };
+      this.reservationService.updateReservation(updatedReservation).subscribe(
+        (response) => {
+          console.log('Reservation cancelled successfully', response);
+          const index = this.field.findIndex((res: any) => res.id === id);
+          if (index !== -1) {
+            this.field[index] = updatedReservation;
+            this.changePage(0); 
+          }
+        },
+        (error) => {
+          console.error('Error cancelling reservation', error);
+        }
+      );
+    }
+  }
+
+  getColumns(): string[] {
+    return this.MetaDataColumn.map(c => c.field);
+  }
 }
