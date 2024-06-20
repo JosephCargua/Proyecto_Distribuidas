@@ -1,9 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoreModule } from "../core/core.module";
-import { UserService } from '../services/api_serivices/user/user.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ILogin } from '../interfaces/userAuth.interface';
+import { UserService } from '../services/api_serivices/UserService/user.service';
+import { FlightService } from '../services/api_serivices/FlightService/flight.service';
+import { ReservationService } from '../services/api_serivices/ReservationService/reservation.service';
+import { data } from 'autoprefixer';
+import { error, log } from 'console';
 
 @Component({
     selector: 'app-login',
@@ -15,7 +18,12 @@ import { ILogin } from '../interfaces/userAuth.interface';
 })
 export class LoginComponent {
 
-  member = inject(UserService);
+  //member = inject(UserService);
+
+  users = inject(UserService);
+  flight = inject(FlightService)
+  reservation = inject(ReservationService);
+
   router = inject(Router);
   loginError = false; 
   user:any;
@@ -27,6 +35,71 @@ export class LoginComponent {
 
 
   onLogin(){
+
+    console.log("All Flights");
+    
+
+    this.flight.getFlights().subscribe(
+      (data) => {
+        console.log(data);
+        
+      },
+      error => {
+        console.log(error);
+        
+      }
+    )
+
+    console.log("Flights by origin");
+
+    this.flight.getFlightsByOrigin("Ambato").subscribe(
+      data => {
+        console.log(data);
+        
+      },
+      error => {
+        console.log(error);
+        
+      }
+    )
+
+    console.log("Flights by destinations");
+
+    this.flight.getFlightsByDestination("Ambato").subscribe(
+      data => {
+        console.log(data);
+        
+      },
+      error => {
+        console.log(error);
+        
+      }
+    )
+
+    console.log("Reservations");
+    this.reservation.getReservation("1728177310").subscribe(
+      data => {
+        console.log(data);
+        
+      },
+      error =>{
+        console.log(error);
+        
+      }
+    )
+
+    console.log("All Users");
+    this.users.getUsers().subscribe(
+      data => {
+        console.log(data);
+        
+      },
+      error => {
+        console.log(error);
+        
+      }
+    )
+    /*
     if (this.login.valid) {
       const loginData: ILogin = {
         email: this.login.get('email')?.value,
@@ -48,6 +121,9 @@ export class LoginComponent {
     } else {
       console.log('Formulario inválido');
     }
+      */
+
   }
+    
 }
 
