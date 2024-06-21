@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "http://208.94.246.108:35000/ReservacionService.svc/rest/help",
+        "target": "http://208.94.246.108:35000",
         "secure": false,
         "changeOrigin": true
     }

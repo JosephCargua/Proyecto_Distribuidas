@@ -38,6 +38,16 @@ export class HistoryAirComponent {
     this.loadReservations();
   }
 
+  r = {
+    cantidadAsientos: 3,
+      cedula: "1728177310",
+      estado: "Activo",
+      idVuelo: 1,
+      id: 1,
+      precioUnitario: 50,
+      total: 60
+  }
+
   field: any = [];
 
   loadReservations() {
@@ -79,11 +89,18 @@ export class HistoryAirComponent {
 
   cancelReservation(id: number) {
     const reservation = this.field.find((res: any) => res.id === id);
+    console.log(reservation);
+    
     if (reservation) {
-      reservation.state = 'Cancelado';
+
       const updatedReservation: IReservation = {
-        ...reservation,
-        estado: 'Cancelado'
+        id: reservation.id,   
+        idVuelo: reservation.idFlight,
+        cedula: reservation.card,
+        cantidadAsientos: reservation.numberSeats,
+        estado: 'Cancelado',
+        precioUnitario: reservation.unitPrice,
+        total: reservation.total
       };
       this.reservationService.updateReservation(updatedReservation).subscribe(
         (response) => {
@@ -93,12 +110,21 @@ export class HistoryAirComponent {
             this.field[index] = updatedReservation;
             this.changePage(0); 
           }
+          this.loadReservations();
         },
         (error) => {
           console.error('Error cancelling reservation', error);
         }
       );
     }
+  }
+
+  onCancel(){
+    this.reservationService.updateReservation(this.r).subscribe(
+      data =>{
+        console.log(data);
+      }
+    )
   }
 
   getColumns(): string[] {
