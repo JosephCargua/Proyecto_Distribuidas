@@ -5,8 +5,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { UserService } from '../services/api_serivices/UserService/user.service';
 import { FlightService } from '../services/api_serivices/FlightService/flight.service';
 import { ReservationService } from '../services/api_serivices/ReservationService/reservation.service';
-import { data } from 'autoprefixer';
-import { error, log } from 'console';
 
 @Component({
     selector: 'app-login',
@@ -17,8 +15,6 @@ import { error, log } from 'console';
       ReactiveFormsModule,]
 })
 export class LoginComponent {
-
-  //member = inject(UserService);
 
   users = inject(UserService);
   flight = inject(FlightService)
@@ -99,30 +95,9 @@ export class LoginComponent {
         
       }
     )
-    /*
-    if (this.login.valid) {
-      const loginData: ILogin = {
-        email: this.login.get('email')?.value,
-        password: this.login.get('password')?.value,
-      };
-
-      this.member.logInUserMember(loginData).subscribe(
-        response => {
-          this.user = response;
-          alert("Inicio de sesion correcto")
-          this.router.navigate(['inicio']);
-        },
-        error => {
-          alert("Error de autenticación: " +error.error.data)
-          console.error('Error de autenticación', error);
-          this.loginError = true; 
-        }
-      );
-    } else {
-      console.log('Formulario inválido');
-    }
-      */
-
+  }
+  onRegister() {
+    this.router.navigate(['/register']); 
   }
     
 }

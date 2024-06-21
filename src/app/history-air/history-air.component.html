@@ -10,7 +10,14 @@
           <th mat-header-cell *matHeaderCellDef> {{ column.title }} </th>
           <td mat-cell *matCellDef="let element">
             {{ column.field !== 'actions' ? element[column.field] : '' }}
-            <button *ngIf="column.field === 'actions'" mat-button (click)="cancelReservation(element.id)">Cancelar</button>
+            <ng-container *ngIf="column.field === 'actions'">
+              <button mat-icon-button color="primary" (click)="openDetailDialog(element.id,element.card,element.idFlight)">
+                <mat-icon>info</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="cancelReservation(element.id)">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </ng-container>
           </td>
         </ng-container>
 
@@ -18,6 +25,7 @@
         <tr mat-row *matRowDef="let row; columns: getColumns();"></tr>
       </table>
     </ng-scrollbar>
+    
     <app-paginator
       fxLayout
       fxLayoutAlign="end center"
@@ -26,6 +34,7 @@
     </app-paginator>
   </app-container>
 </main>
+
 <div class="container">
   <h1>Haga que su viaje sea inolvidable</h1>
   <p>Conozca la experiencia de volar con UTA Airlines y organice un viaje inolvidable más allá de su vuelo.</p>
