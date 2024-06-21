@@ -4,8 +4,8 @@
   <div class="grid grid-cols-2 gap-4">
     <div>
       <p class="mb-2"><strong>Código:</strong> {{ data.reservation.id }}</p>
-      <p class="mb-2"><strong>Vuelo:</strong> {{ data.reservation.idFlight }}</p>
-      <p class="mb-2"><strong>Cédula:</strong> {{ data.reservation.card }}</p>
+      <p class="mb-2"><strong>Vuelo:</strong> {{ data.reservation.idVuelo }}</p>
+      <p class="mb-2"><strong>Cédula:</strong> {{ data.reservation.cedula }}</p>
       <p class="mb-2"><strong>Nombre:</strong> {{ data.user.name }}</p>
       <p class="mb-2"><strong>Apellido:</strong> {{ data.user.lastName }}</p>
       <p class="mb-2"><strong>Correo:</strong> {{ data.user.email }}</p>
@@ -13,10 +13,10 @@
     <div>
       <p class="mb-2"><strong>Origen:</strong> {{ data.flight.origin }}</p>
       <p class="mb-2"><strong>Destino:</strong> {{ data.flight.destination }}</p>
-      <p class="mb-2"><strong>Asientos:</strong> {{ data.reservation.numberSeats }}</p>
+      <p class="mb-2"><strong>Asientos:</strong> {{ data.reservation.cantidadAsientos }}</p>
       <p class="mb-2"><strong>Capacidad:</strong> {{ data.flight.capacity }}</p>
       <p class="mb-2"><strong>Estado:</strong> {{ data.flight.state }}</p>
-      <p class="mb-2"><strong>Precio Unitario:</strong> {{ data.reservation.unitPrice }}</p>
+      <p class="mb-2"><strong>Precio Unitario:</strong> {{ data.reservation.precioUnitario }}</p>
       <p class="mb-2"><strong>Total:</strong> {{ data.reservation.total }}</p>
     </div>
   </div>
