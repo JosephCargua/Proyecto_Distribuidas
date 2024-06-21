@@ -33,11 +33,11 @@ export class HistoryAirComponent {
 
   MetaDataColumn: MetaDataColumn[] = [
     { field: 'id', title: 'Codigo' },
-    { field: 'idFlight', title: 'Vuelo' },
-    { field: 'card', title: 'Cedula' },
-    { field: 'numberSeats', title: 'Asientos' },
-    { field: 'state', title: 'Estado' },
-    { field: 'unitPrice', title: 'Precio' },
+    { field: 'idVuelo', title: 'Vuelo' },
+    { field: 'cedula', title: 'Cedula' },
+    { field: 'cantidadAsientos', title: 'Asientos' },
+    { field: 'estado', title: 'Estado' },
+    { field: 'precioUnitario', title: 'Precio' },
     { field: 'total', title: 'Total' },
     { field: 'actions', title: 'Actions' } 
   ];
@@ -61,11 +61,11 @@ export class HistoryAirComponent {
           this.records.forEach((dato: any) => {
             this.field.push({
               id: dato.id,
-              idFlight: dato.idVuelo,
-              card: dato.cedula,
-              numberSeats: dato.cantidadAsientos,
-              state: dato.estado,
-              unitPrice: dato.precioUnitario,
+              idVuelo: dato.idVuelo,
+              cedula: dato.cedula,
+              cantidadAsientos: dato.cantidadAsientos,
+              estado: dato.estado,
+              precioUnitario: dato.precioUnitario,
               total: dato.total
             });
           });
@@ -144,11 +144,18 @@ export class HistoryAirComponent {
 
   cancelReservation(id: number) {
     const reservation = this.field.find((res: any) => res.id === id);
+    console.log(reservation);
+    
     if (reservation) {
-      reservation.state = 'Cancelado';
+
       const updatedReservation: IReservation = {
-        ...reservation,
-        estado: 'Cancelado'
+        id: reservation.id,   
+        idVuelo: reservation.idVuelo,
+        cedula: reservation.cedula,
+        cantidadAsientos: reservation.cantidadAsientos,
+        estado: 'Cancelado',
+        precioUnitario: reservation.precioUnitario,
+        total: reservation.total
       };
       this.reservationService.updateReservation(updatedReservation).subscribe(
         (response) => {
@@ -158,6 +165,7 @@ export class HistoryAirComponent {
             this.field[index] = updatedReservation;
             this.changePage(0); 
           }
+          this.loadReservations();
         },
         (error) => {
           console.error('Error cancelling reservation', error);
@@ -165,6 +173,8 @@ export class HistoryAirComponent {
       );
     }
   }
+
+
 
   openDetailDialog(id:number,card: string,idFlight:number) {
     const reservation = this.field.find((res: any) => res.id === id);

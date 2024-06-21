@@ -1,9 +1,9 @@
 export interface IReservation {
-    id: number,   
-    idFlight: number;
-    card: string;
-    numberSeats: number;
-    state: string;
-    unitPrice: number;
+    id?: number,   
+    idVuelo: number;
+    cedula: string;
+    cantidadAsientos: number;
+    estado: string;
+    precioUnitario: number;
     total: number;
 }
