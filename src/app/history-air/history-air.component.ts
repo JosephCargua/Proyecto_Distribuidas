@@ -174,13 +174,6 @@ export class HistoryAirComponent {
     }
   }
 
-  onCancel(){
-    this.reservationService.updateReservation(this.r).subscribe(
-      data =>{
-        console.log(data);
-      }
-    )
-  }
 
 
   openDetailDialog(id:number,card: string,idFlight:number) {
