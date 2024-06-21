@@ -16,9 +16,7 @@ import { ReservationService } from '../services/api_serivices/ReservationService
 })
 export class LoginComponent {
 
-  users = inject(UserService);
-  flight = inject(FlightService)
-  reservation = inject(ReservationService);
+  private userService = inject(UserService)
 
   router = inject(Router);
   loginError = false; 
@@ -30,71 +28,28 @@ export class LoginComponent {
   });
 
 
-  onLogin(){
-
-    console.log("All Flights");
-    
-
-    this.flight.getFlights().subscribe(
-      (data) => {
-        console.log(data);
-        
-      },
-      error => {
-        console.log(error);
-        
+  onLogin() {
+    if (this.login.valid) {
+      const user = {
+        correo: this.login.get('email')?.value,
+        contraseña: this.login.get('password')?.value
       }
-    )
-
-    console.log("Flights by origin");
-
-    this.flight.getFlightsByOrigin("Ambato").subscribe(
-      data => {
-        console.log(data);
-        
-      },
-      error => {
-        console.log(error);
-        
-      }
-    )
-
-    console.log("Flights by destinations");
-
-    this.flight.getFlightsByDestination("Ambato").subscribe(
-      data => {
-        console.log(data);
-        
-      },
-      error => {
-        console.log(error);
-        
-      }
-    )
-
-    console.log("Reservations");
-    this.reservation.getReservation("1728177310").subscribe(
-      data => {
-        console.log(data);
-        
-      },
-      error =>{
-        console.log(error);
-        
-      }
-    )
-
-    console.log("All Users");
-    this.users.getUsers().subscribe(
-      data => {
-        console.log(data);
-        
-      },
-      error => {
-        console.log(error);
-        
-      }
-    )
+      this.userService.signInUser(user).subscribe(
+        data =>{
+          console.log(data);
+          if(data != null){
+            //
+            this.userService.saveInLocalStorage('user',data)
+            this.router.navigate(['/inicio']); 
+            alert("Inicio de sesion correcto");
+          }else{
+            alert("Credenciales incorrectas");
+          }
+          
+        }
+      )
+      
+    }
   }
   onRegister() {
     this.router.navigate(['/register']); 

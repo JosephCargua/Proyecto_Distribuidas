@@ -12,6 +12,7 @@ import { MetaDataColumn } from "../shared/interfaces/metacolumn.interface";
 import { environment } from "../../environments/environment.development";
 import { IReservation } from "../interfaces/reservation.interface";
 import { ReservationDetailDialogComponent } from "../reservation-detail-dialog/reservation-detail-dialog.component";
+import { ISignUp } from "../interfaces/userAuth.interface";
 
 @Component({
   selector: 'app-history-air',
@@ -51,9 +52,12 @@ export class HistoryAirComponent {
     this.loadFlights();
   }
 
+  user(): ISignUp{
+    return this.userService.getFromLocalStorage('user');
+  }
+
   loadReservations() {
-    const card = '1728177310';
-    this.reservationService.getReservation(card).subscribe(
+    this.reservationService.getReservation(this.user().cedula).subscribe(
       (data) => {
         console.log('Received reservations data:', data);
         if (Array.isArray(data)) {

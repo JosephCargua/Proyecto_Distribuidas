@@ -20,7 +20,7 @@ export class UserService {
   }
 
   signInUser(user: ISignIn): Observable<ISignIn>{
-    return this.http.post<ISignIn>(environment.URL_API_USERS + `LoginUsuario/${user.email}/${user.password}`, user);
+    return this.http.post<ISignIn>(environment.URL_API_USERS + `LoginUsuario/${user.correo}/${user.contraseña}`, user);
   }
 
   updateUser(user: ISignUp): Observable<ISignUp>{
@@ -29,5 +29,17 @@ export class UserService {
 
   deleteUser(card: string){
     return this.http.delete(environment.URL_API_USERS + `EliminarUsuario/${card}`);
+  }
+
+  saveInLocalStorage(key:string, values:any){
+    return localStorage.setItem(key, JSON.stringify(values));
+  }
+
+  getFromLocalStorage(key: string): any {
+    const item = localStorage.getItem(key);
+    if (item) {
+      return JSON.parse(item);
+    }
+    return null;
   }
 }
