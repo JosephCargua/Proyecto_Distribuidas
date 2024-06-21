@@ -1,13 +1,13 @@
 export interface ISignUp {
-    card:     string;
-    name:     string;
-    lastName: string;
-    email:    string;
-    password: string;
+    cedula:     string;
+    nombre:     string;
+    apellido: string;
+    correo:    string;
+    contraseña: string;
 }
 
 export interface ISignIn {
-    email:    string;
-    password: string;
+    correo:    string;
+    contraseña: string;
 }
 
